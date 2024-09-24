@@ -14,3 +14,11 @@ def calculate_cost(request):
 
         total_cost = total_hours * 10  # $10/hour
         return JsonResponse({'total_cost': total_cost})
+
+
+from django.shortcuts import render
+from .models import Category
+
+def index(request):
+    categories = Category.objects.all()
+    return render(request, 'calculator/index.html', {'categories': categories})
