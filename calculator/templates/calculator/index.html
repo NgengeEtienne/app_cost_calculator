@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-4">
     <div class="card mb-4">
-        <div class="card-header bg-primary text-white px-4">
+        <div class="card-header bg-info text-white px-4">
             <div class="fw-500">Select App Category</div>
         </div>
         <div class="card-body">
@@ -21,10 +21,10 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" id="display">
         <div class="col-lg-6">
             <div class="card">
-                <div class="card-header bg-primary text-white px-4">
+                <div class="card-header bg-info text-white px-4">
                     <div class="fw-500">Available Features</div>
                 </div>
                 <div class="card-body p-0">
@@ -39,6 +39,11 @@
                             </thead>
                             <tbody id="featuresBody">
                                 <!-- Features will be populated here via AJAX -->
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">
+                                        Select a category!
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -47,13 +52,13 @@
         </div>
 
         <div class="col-lg-6">
-            <div class="card mt-4 mt-lg-0">
-                <div class="card-header bg-primary text-white px-4">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white px-4">
                     <div class="fw-500">Total Cost</div>
                 </div>
                 <div class="card-body">
                     <h3>Total Cost: $<span id="totalCost">0</span></h3>
-                    <button class="btn btn-primary btn-block">Checkout</button>
+                    <button id="checkoutBtn" class="btn btn-success btn-block" disabled>Checkout</button>
                 </div>
             </div>
         </div>
@@ -63,6 +68,8 @@
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script>
 $(document).ready(function() {
+    $('#display').hide(); // Hides the element
+
     $('#categorySelect').change(function() {
         var categoryId = $(this).val();
         if (categoryId) {
@@ -70,6 +77,8 @@ $(document).ready(function() {
                 url: "{% url 'get_features' 0 %}".replace('0', categoryId),
                 type: 'GET',
                 success: function(data) {
+                    $('#display').show(); // Changes visibility from hidden to visible
+
                     $('#featuresBody').empty();  // Clear the table body
                     data.features.forEach(function(feature) {
                         $('#featuresBody').append(`
@@ -86,8 +95,10 @@ $(document).ready(function() {
                 }
             });
         } else {
+            $('#display').hide(); // Hides the element
             $('#featuresBody').empty();
             $('#totalCost').text('0');
+            $('#checkoutBtn').prop('disabled', true);  // Disable checkout button
         }
     });
 
@@ -97,6 +108,7 @@ $(document).ready(function() {
             totalCost += $(this).data('hours') * 10;  // Assuming $10 per hour
         });
         $('#totalCost').text(totalCost);
+        $('#checkoutBtn').prop('disabled', totalCost === 0);  // Disable checkout if no features selected
     });
 });
 </script>
