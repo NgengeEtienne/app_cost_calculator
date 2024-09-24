@@ -6,7 +6,7 @@ import time
 def start_server_and_open_browser():
     project_dir = "app_cost_calculator"
 
-    os.chdir(project_dir)
+    #os.chdir(project_dir)
 
     # Run migrations, seed the database, and start the Django server
     subprocess.Popen('cmd.exe /K "python manage.py makemigrations & python manage.py migrate & python manage.py seed & python manage.py runserver 22000"', shell=True)
