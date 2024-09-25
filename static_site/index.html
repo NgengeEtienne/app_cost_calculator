@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>App Cost Calculator</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2 class="display-6 mb-0">App Cost Calculator</h2>
+        <div class="content">
+            
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white px-4">
+            <div class="fw-500">Select App Category</div>
+        </div>
+        <div class="card-body">
+            <form id="category-form">
+                <div class="form-group">
+                    <label for="categorySelect">Choose a category:</label>
+                    <select class="form-control" id="categorySelect">
+                        <option value="">Select a Category</option>
+                        
+                            <option value="1">E-commerce</option>
+                        
+                            <option value="2">Social Media</option>
+                        
+                            <option value="3">Cloud Kitchen</option>
+                        
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row" id="display">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-info text-white px-4">
+                    <div class="fw-500">Available Features</div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="text-xs font-monospace">
+                                <tr>
+                                    <td class="px-4 py-2 border-bottom-0 text-muted">Feature</td>
+                                    <td class="px-4 py-2 border-bottom-0 text-muted">Hours</td>
+                                    <td class="px-4 py-2 border-bottom-0 text-muted text-end">Select</td>
+                                </tr>
+                            </thead>
+                            <tbody id="featuresBody">
+                                <!-- Features will be populated here via AJAX -->
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">
+                                        Select a category!
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white px-4">
+                    <div class="fw-500">Total Cost</div>
+                </div>
+                <div class="card-body">
+                    <h3>Total Cost: $<span id="totalCost">0</span></h3>
+                    <button id="checkoutBtn" class="btn btn-success btn-block" disabled>Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script>
+$(document).ready(function() {
+    $('#display').hide(); // Hides the element
+
+    $('#categorySelect').change(function() {
+        var categoryId = $(this).val();
+        if (categoryId) {
+            $.ajax({
+                url: "/get-features/0/".replace('0', categoryId),
+                type: 'GET',
+                success: function(data) {
+                    $('#display').show(); // Changes visibility from hidden to visible
+
+                    $('#featuresBody').empty();  // Clear the table body
+                    data.features.forEach(function(feature) {
+                        $('#featuresBody').append(`
+                            <tr>
+                                <td class="px-4 border-top">${feature.name}</td>
+                                <td class="px-4 border-top">${feature.hours}</td>
+                                <td class="px-4 border-top text-end"><input type="checkbox" class="feature-checkbox" data-hours="${feature.hours}" /></td>
+                            </tr>
+                        `);
+                    });
+                },
+                error: function() {
+                    alert('Failed to load features.');
+                }
+            });
+        } else {
+            $('#display').hide(); // Hides the element
+            $('#featuresBody').empty();
+            $('#totalCost').text('0');
+            $('#checkoutBtn').prop('disabled', true);  // Disable checkout button
+        }
+    });
+
+    $(document).on('change', '.feature-checkbox', function() {
+        var totalCost = 0;
+        $('.feature-checkbox:checked').each(function() {
+            totalCost += $(this).data('hours') * 10;  // Assuming $10 per hour
+        });
+        $('#totalCost').text(totalCost);
+        $('#checkoutBtn').prop('disabled', totalCost === 0);  // Disable checkout if no features selected
+    });
+});
+</script>
+
+        </div>
+    </div>
+</body>
+</html>
