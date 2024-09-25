@@ -1,7 +1,7 @@
 
 # App Cost Calculator
 
-This project is a Django-based application for calculating app development costs dynamically based on selected features.
+This project is a Django-based application for calculating app development costs dynamically based on selected features. You can find the hosted project at [App Cost Calculator](https://app-cost-calculator1.netlify.app/).
 
 ## Requirements
 
