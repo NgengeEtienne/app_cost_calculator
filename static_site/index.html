@@ -91,7 +91,7 @@ $(document).ready(function() {
         var categoryId = $(this).val();
         if (categoryId) {
             $.ajax({
-                url: "/get-features/0/".replace('0', categoryId),
+                url: "/get-features/0/index.json".replace('0', categoryId),
                 type: 'GET',
                 success: function(data) {
                     $('#display').show(); // Changes visibility from hidden to visible
