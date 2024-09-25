@@ -97,15 +97,16 @@ $(document).ready(function() {
                     $('#display').show(); // Changes visibility from hidden to visible
 
                     $('#featuresBody').empty();  // Clear the table body
-                    data.features.forEach(function(feature) {
-                        $('#featuresBody').append(`
-                            <tr>
-                                <td class="px-4 border-top">${feature.name}</td>
-                                <td class="px-4 border-top">${feature.hours}</td>
-                                <td class="px-4 border-top text-end"><input type="checkbox" class="feature-checkbox" data-hours="${feature.hours}" /></td>
-                            </tr>
-                        `);
-                    });
+                    console.log(data.features)
+                    // data.features.forEach(function(feature) {
+                    //     $('#featuresBody').append(`
+                    //         <tr>
+                    //             <td class="px-4 border-top">${feature.name}</td>
+                    //             <td class="px-4 border-top">${feature.hours}</td>
+                    //             <td class="px-4 border-top text-end"><input type="checkbox" class="feature-checkbox" data-hours="${feature.hours}" /></td>
+                    //         </tr>
+                    //     `);
+                    // });
                 },
                 error: function() {
                     alert('Failed to load features.');
