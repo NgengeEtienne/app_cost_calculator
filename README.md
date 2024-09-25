@@ -8,7 +8,7 @@ This project is a Django-based application for calculating app development costs
 Make sure you have the following installed:
 
 - Python 3.x
-- Django (any version compatible with your project)
+- Django 
 
 ## Project Structure
 
@@ -47,7 +47,7 @@ app_cost_calculator/
 
    This script will:
    - Apply any migrations to your database.
-   - Seed the database (if you have a seeding script in place).
+   - Seed the database .
    - Start the Django development server.
    - Open your web browser to the application's home page.
 
